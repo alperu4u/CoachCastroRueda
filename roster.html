@@ -1,1 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roster - Coach Castro Rueda</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="site-wrapper">
+    <header>
+      <h1>Coach Castro Rueda</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">About</a></li>
+          <li><a href="roster.html">Roster</a></li>
+          <li><a href="conditioning-drills.html">Conditioning & Drills</a></li>
+          <li><a href="Soccer-Drills.html">Soccer Drills</a></li>
+          <li><a href="Contact-Coach.html">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="roster" style="background-image: url('pictures/soccerfieldcartoon.png'); background-size: cover; background-position: center; padding: 2rem;">
+      <section class="roster-table" style="background-color: rgba(0, 0, 0, 0.75); padding: 2rem; border-radius: 12px; color: white; max-width: 100%; overflow-x: auto;">
+        <h2 style="text-align:center; margin-bottom: 1rem;">Team Roster</h2>
+        <table style="width:100%; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>#</th>
+              <th>Position</th>
+              <th>Agility</th>
+              <th>Speed (20m)</th>
+              <th>Passing (L)</th>
+              <th>Passing (R)</th>
+              <th>Dribbling</th>
+              <th>Shooting (L)</th>
+              <th>Shooting (R)</th>
+              <th>Soccer IQ</th>
+              <th>Attendance</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="roster-body">
+            <!-- Player rows will be inserted here by script -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Coach Castro Rueda. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const players = [
+      { name: "Player One", number: 7 },
+      { name: "Player Two", number: 10 },
+      { name: "Player Three", number: 3 },
+      // Add up to 14 or more here...
+    ];
+
+    const positions = ["GK", "CB", "RB", "LB", "CM", "CDM", "LM", "RM", "CAM", "LW", "RW", "ST"];
+
+    const tbody = document.getElementById("roster-body");
+
+    players.forEach((player) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td><a href="#" style="color:#D3BC8D; text-decoration: underline;">${player.name}</a></td>
+        <td><input type="number" value="${player.number}" style="width:40px;"></td>
+        <td>
+          <select>
+            ${positions.map(pos => `<option value="${pos}">${pos}</option>`).join('')}
+          </select>
+        </td>
+        <td><input type="text" placeholder="T-test"></td>
+        <td><input type="text" placeholder="Time"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td><textarea rows="1"></textarea></td>
+      `;
+      tbody.appendChild(row);
+    });
+  </script>
+</body>
+</html>
 
