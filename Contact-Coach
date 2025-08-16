@@ -21,9 +21,9 @@
       </nav>
     </header>
 
-    <main class="contact-section">
-      <form class="contact-form" action="https://formspree.io/f/xpzvjjke" method="POST">
-        <h2>Contact Coach</h2>
+    <main class="contact-form-section" style="background-image: url('pictures/infieldfutbol.png');">
+      <form action="https://formspree.io/f/xpzvjjke" method="POST">
+        <h3>Contact Coach</h3>
         <p>Reach out for personalized nutrition, workout plans, or to book 1-on-1 or group training.</p>
 
         <label for="name">Name</label>
@@ -48,4 +48,3 @@
   </div>
 </body>
 </html>
-
