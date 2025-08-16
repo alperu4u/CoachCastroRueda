@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Coach</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="site-wrapper">
+    <header>
+      <h1>Coach Castro Rueda</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">About</a></li>
+          <li><a href="roster.html">Roster</a></li>
+          <li><a href="conditioning-drills.html">Conditioning & Drills</a></li>
+          <li><a href="Soccer-Drills.html">Soccer Drills</a></li>
+          <li><a href="Contact-Coach.html">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="contact-section">
+      <form class="contact-form" action="https://formspree.io/f/xpzvjjke" method="POST">
+        <h2>Contact Coach</h2>
+        <p>Reach out for personalized nutrition, workout plans, or to book 1-on-1 or group training.</p>
+
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" required />
+
+        <label for="phone">Phone Number</label>
+        <input type="text" name="phone" id="phone" required />
+
+        <label for="email">Email</label>
+        <input type="email" name="_replyto" id="email" required />
+
+        <label for="message">Message</label>
+        <textarea name="message" id="message" rows="4" required></textarea>
+
+        <button type="submit">Send Message</button>
+      </form>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Coach Castro Rueda. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>
 
