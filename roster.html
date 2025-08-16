@@ -6,7 +6,6 @@
   <title>Roster - Coach Castro Rueda</title>
   <link rel="stylesheet" href="style.css" />
   <script type="module">
-    // Firebase config and Firestore setup
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
     import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
@@ -25,7 +24,7 @@
 
     window.addEventListener("DOMContentLoaded", async () => {
       const rosterBody = document.getElementById("roster-body");
-      const playersRef = collection(db, "players");
+      const playersRef = collection(db, "coach-castro-rueda");
       const snapshot = await getDocs(playersRef);
 
       snapshot.forEach((docSnap) => {
@@ -39,7 +38,7 @@
 
           if (field === "name") {
             const link = document.createElement("a");
-            link.href = "#"; // future personalized page
+            link.href = "#";
             link.textContent = player[field];
             link.style.color = "#D3BC8D";
             cell.appendChild(link);
@@ -48,7 +47,7 @@
             textarea.value = player[field] || "";
             textarea.rows = 1;
             textarea.addEventListener("change", async () => {
-              await updateDoc(doc(db, "players", docSnap.id), {
+              await updateDoc(doc(db, "coach-castro-rueda", docSnap.id), {
                 [field]: textarea.value
               });
             });
@@ -58,7 +57,7 @@
             input.type = field === "number" ? "number" : "text";
             input.value = player[field] || "";
             input.addEventListener("change", async () => {
-              await updateDoc(doc(db, "players", docSnap.id), {
+              await updateDoc(doc(db, "coach-castro-rueda", docSnap.id), {
                 [field]: input.value
               });
             });
@@ -110,7 +109,7 @@
             </tr>
           </thead>
           <tbody id="roster-body">
-            <!-- Player rows load here from Firebase -->
+            <!-- Firebase data loads here -->
           </tbody>
         </table>
       </section>
@@ -122,4 +121,3 @@
   </div>
 </body>
 </html>
-
