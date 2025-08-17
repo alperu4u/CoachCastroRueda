@@ -31,15 +31,17 @@
       const playersRef = collection(db, "coach-castro-rueda");
       const snapshot = await getDocs(playersRef);
 
-      const players = [];
+      const uniquePlayers = new Map();
 
       snapshot.forEach((docSnap) => {
         const player = docSnap.data();
-        if (!isBlank(player) && !players.some(p => p.name === player.name && p.number === player.number)) {
-          players.push({ id: docSnap.id, ...player });
+        const key = `${player.name}|${player.number}`;
+        if (!isBlank(player) && !uniquePlayers.has(key)) {
+          uniquePlayers.set(key, { id: docSnap.id, ...player });
         }
       });
 
+      const players = Array.from(uniquePlayers.values());
       players.sort((a, b) => Number(a.number) - Number(b.number));
 
       players.forEach((player) => {
@@ -60,6 +62,10 @@
             textarea.value = player[field] || "";
             textarea.rows = 1;
             textarea.style.width = "100px";
+            textarea.title = player[field] || "";
+            textarea.addEventListener("input", () => {
+              textarea.title = textarea.value;
+            });
             textarea.addEventListener("change", async () => {
               await updateDoc(doc(db, "coach-castro-rueda", player.id), {
                 [field]: textarea.value
@@ -136,3 +142,4 @@
   </div>
 </body>
 </html>
+
