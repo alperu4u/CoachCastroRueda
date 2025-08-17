@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+     <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -35,7 +36,9 @@
 
       snapshot.forEach((docSnap) => {
         const player = docSnap.data();
-        const key = `${player.name}|${player.number}`;
+        const name = (player.name || "").trim().toLowerCase();
+        const number = (player.number || "").toString().trim();
+        const key = `${name}|${number}`;
         if (!isBlank(player) && !uniquePlayers.has(key)) {
           uniquePlayers.set(key, { id: docSnap.id, ...player });
         }
@@ -62,6 +65,7 @@
             textarea.value = player[field] || "";
             textarea.rows = 1;
             textarea.style.width = "100px";
+            textarea.style.maxHeight = "60px";
             textarea.title = player[field] || "";
             textarea.addEventListener("input", () => {
               textarea.title = textarea.value;
@@ -142,4 +146,5 @@
   </div>
 </body>
 </html>
+
 
