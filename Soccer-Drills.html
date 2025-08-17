@@ -6,40 +6,46 @@
   <title>Soccer Drills - Coach Castro Rueda</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .drill-section {
-      padding: 2rem;
-      border-bottom: 2px solid #333;
-    }
-    .drill-section h2 {
-      color: #D3BC8D;
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
+    .drill-heading {
+      text-align: center;
+      font-size: 2.2rem;
+      color: #2b2b2b;
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+      font-weight: bold;
+      border-bottom: 3px solid #2b2b2b;
+      display: inline-block;
     }
     .drill-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
     }
     .drill-card {
-      background-color: #fff;
-      color: #222;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 320px;
       padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: left;
     }
     .drill-card iframe {
       width: 100%;
-      height: 200px;
+      height: 180px;
+      border: none;
       border-radius: 8px;
     }
     .drill-card h3 {
-      margin: 0.5rem 0 0.2rem;
-    }
-    .coming-soon {
-      text-align: center;
-      margin: 3rem 0;
       font-size: 1.2rem;
-      color: #fff;
+      margin: 0.8rem 0 0.4rem;
+      color: #2b2b2b;
+    }
+    .drill-card p {
+      margin: 0;
+      font-size: 1rem;
+      color: #444;
     }
   </style>
 </head>
@@ -58,73 +64,69 @@
       </nav>
     </header>
 
-    <main>
-      <section class="drill-section">
-        <h2>Passing Drills</h2>
+    <main style="padding: 2rem;">
+      <section>
+        <h2 class="drill-heading">Passing</h2>
         <div class="drill-grid">
           <div class="drill-card">
-            <iframe src="https://www.youtube.com/embed/RS67EpjF8B8" frameborder="0" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/RS67EpjF8B8" allowfullscreen></iframe>
             <h3>Quick One-Touch Passing</h3>
             <p>Sharp short passing to improve reaction and accuracy.</p>
           </div>
           <div class="drill-card">
-            <iframe src="https://www.youtube.com/embed/yZFzIX9AQDA" frameborder="0" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/yZFzIX9AQDA" allowfullscreen></iframe>
             <h3>Wall Passing</h3>
             <p>Use a wall or rebounder to practice clean passes and timing.</p>
           </div>
           <div class="drill-card">
-            <iframe src="https://www.youtube.com/embed/tiuwLDvpMFg" frameborder="0" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/tiuwLDvpMFg" allowfullscreen></iframe>
             <h3>Triangle Passing</h3>
             <p>Work in a triangle setup to simulate game-like movement.</p>
           </div>
         </div>
       </section>
 
-      <section class="drill-section">
-        <h2>Dribbling Drills</h2>
+      <section>
+        <h2 class="drill-heading">Dribbling</h2>
         <div class="drill-grid">
           <div class="drill-card">
-            <iframe src="https://www.youtube.com/embed/39m6oFnXOo8" frameborder="0" allowfullscreen></iframe>
-            <h3>Quick Foot Cone Work</h3>
-            <p>Close control dribbling using tight cone layouts.</p>
+            <iframe src="https://www.youtube.com/embed/39m6oFnXOo8" allowfullscreen></iframe>
+            <h3>Foundation Touches</h3>
+            <p>Basic ball mastery drills to improve foot control.</p>
           </div>
           <div class="drill-card">
-            <iframe src="https://www.youtube.com/embed/wJRayihJjbg" frameborder="0" allowfullscreen></iframe>
-            <h3>1v1 Ball Mastery</h3>
-            <p>Practice moves like scissors, cuts, and body feints.</p>
+            <iframe src="https://www.youtube.com/embed/wJRayihJjbg" allowfullscreen></iframe>
+            <h3>Toe Touches</h3>
+            <p>High-rep dribbling drill to build coordination and rhythm.</p>
           </div>
           <div class="drill-card">
-            <iframe src="https://www.youtube.com/embed/69XZ7yP1ayA" frameborder="0" allowfullscreen></iframe>
-            <h3>Speed Dribbling</h3>
-            <p>Push the ball with control at higher speeds.</p>
+            <iframe src="https://www.youtube.com/embed/69XZ7yP1ayA" allowfullscreen></iframe>
+            <h3>Change of Direction</h3>
+            <p>Practice changing direction while dribbling at speed.</p>
           </div>
           <div class="drill-card">
-            <iframe src="https://www.youtube.com/embed/D-CZDhH8p_U" frameborder="0" allowfullscreen></iframe>
-            <h3>Directional Change</h3>
-            <p>Dribbling with cuts and turns using both feet.</p>
+            <iframe src="https://www.youtube.com/embed/D-CZDhH8p_U" allowfullscreen></iframe>
+            <h3>Advanced Dribbling</h3>
+            <p>Combination of moves to beat defenders in 1v1s.</p>
           </div>
         </div>
       </section>
 
-      <section class="drill-section">
-        <h2>Shooting Drills</h2>
+      <section>
+        <h2 class="drill-heading">Shooting</h2>
         <div class="drill-grid">
           <div class="drill-card">
-            <iframe src="https://www.youtube.com/embed/mSsgP1Tp-gA" frameborder="0" allowfullscreen></iframe>
-            <h3>First Touch Finishing</h3>
-            <p>Work on controlling and shooting in one fluid motion.</p>
+            <iframe src="https://www.youtube.com/embed/mSsgP1Tp-gA" allowfullscreen></iframe>
+            <h3>Shooting Accuracy</h3>
+            <p>Work on hitting corners, timing, and placement with each shot.</p>
           </div>
           <div class="drill-card">
-            <iframe src="https://www.youtube.com/embed/kHOyV_2ODbY" frameborder="0" allowfullscreen></iframe>
-            <h3>Power Shots</h3>
-            <p>Build strength and accuracy with strong finishes.</p>
+            <iframe src="https://www.youtube.com/embed/kHOyV_2ODbY" allowfullscreen></iframe>
+            <h3>Finishing Drill</h3>
+            <p>Repetition-based drill for clean, composed finishing.</p>
           </div>
         </div>
       </section>
-
-      <div class="coming-soon">
-        <p><strong>Tactical graphics & weekly drill plans — coming soon!</strong></p>
-      </div>
     </main>
 
     <footer>
@@ -133,4 +135,5 @@
   </div>
 </body>
 </html>
+
 
