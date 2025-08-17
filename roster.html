@@ -1,5 +1,4 @@
-
-     <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -8,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAPEpoiMCgELVnRCLPYhpgMSpQeQLKMLA4",
@@ -23,6 +22,10 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    function normalizeKey(name, number) {
+      return `${(name || '').trim().toLowerCase().replace(/\s+/g, ' ')}|${(number || '').trim()}`;
+    }
+
     function isBlank(player) {
       return !player.name && !player.number && !player.position;
     }
@@ -32,19 +35,25 @@
       const playersRef = collection(db, "coach-castro-rueda");
       const snapshot = await getDocs(playersRef);
 
-      const uniquePlayers = new Map();
+      const seenKeys = new Map();
 
-      snapshot.forEach((docSnap) => {
+      for (const docSnap of snapshot.docs) {
         const player = docSnap.data();
-        const name = (player.name || "").trim().toLowerCase();
-        const number = (player.number || "").toString().trim();
-        const key = `${name}|${number}`;
-        if (!isBlank(player) && !uniquePlayers.has(key)) {
-          uniquePlayers.set(key, { id: docSnap.id, ...player });
-        }
-      });
+        const key = normalizeKey(player.name, player.number);
 
-      const players = Array.from(uniquePlayers.values());
+        if (isBlank(player)) {
+          await deleteDoc(doc(db, "coach-castro-rueda", docSnap.id));
+          continue;
+        }
+
+        if (seenKeys.has(key)) {
+          await deleteDoc(doc(db, "coach-castro-rueda", docSnap.id));
+        } else {
+          seenKeys.set(key, { id: docSnap.id, ...player });
+        }
+      }
+
+      const players = Array.from(seenKeys.values());
       players.sort((a, b) => Number(a.number) - Number(b.number));
 
       players.forEach((player) => {
@@ -65,7 +74,6 @@
             textarea.value = player[field] || "";
             textarea.rows = 1;
             textarea.style.width = "100px";
-            textarea.style.maxHeight = "60px";
             textarea.title = player[field] || "";
             textarea.addEventListener("input", () => {
               textarea.title = textarea.value;
@@ -146,5 +154,6 @@
   </div>
 </body>
 </html>
+
 
 
