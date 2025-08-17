@@ -22,15 +22,28 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    function isBlank(player) {
+      return !player.name && !player.number && !player.position;
+    }
+
     window.addEventListener("DOMContentLoaded", async () => {
       const rosterBody = document.getElementById("roster-body");
       const playersRef = collection(db, "coach-castro-rueda");
       const snapshot = await getDocs(playersRef);
 
+      const players = [];
+
       snapshot.forEach((docSnap) => {
         const player = docSnap.data();
-        const row = document.createElement("tr");
+        if (!isBlank(player) && !players.some(p => p.name === player.name && p.number === player.number)) {
+          players.push({ id: docSnap.id, ...player });
+        }
+      });
 
+      players.sort((a, b) => Number(a.number) - Number(b.number));
+
+      players.forEach((player) => {
+        const row = document.createElement("tr");
         const fields = ["name", "number", "position", "agility", "speed", "passingL", "passingR", "dribbling", "shootingL", "shootingR", "soccerIQ", "attendance", "notes"];
 
         fields.forEach((field) => {
@@ -46,8 +59,9 @@
             const textarea = document.createElement("textarea");
             textarea.value = player[field] || "";
             textarea.rows = 1;
+            textarea.style.width = "100px";
             textarea.addEventListener("change", async () => {
-              await updateDoc(doc(db, "coach-castro-rueda", docSnap.id), {
+              await updateDoc(doc(db, "coach-castro-rueda", player.id), {
                 [field]: textarea.value
               });
             });
@@ -56,8 +70,9 @@
             const input = document.createElement("input");
             input.type = field === "number" ? "number" : "text";
             input.value = player[field] || "";
+            input.style.width = ["number", "position", "agility", "speed", "passingL", "passingR", "dribbling", "shootingL", "shootingR", "soccerIQ", "attendance"].includes(field) ? "60px" : "120px";
             input.addEventListener("change", async () => {
-              await updateDoc(doc(db, "coach-castro-rueda", docSnap.id), {
+              await updateDoc(doc(db, "coach-castro-rueda", player.id), {
                 [field]: input.value
               });
             });
