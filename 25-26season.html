@@ -4,132 +4,157 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>25-26 Season Stats</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../style.css" />
   <style>
-    .season-banner {
-      width: 100%;
-      max-height: 280px;
-      object-fit: cover;
-      display: block;
-      border-bottom: 5px solid black;
+    body {
+      background-color: #D3BC8D;
+      font-family: 'Montserrat', sans-serif;
+      color: #222;
+      margin: 0;
+      padding: 0;
     }
 
-    .season-container {
-      background-color: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 2rem;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    .banner {
+      width: 100%;
+      display: block;
+      margin-bottom: 2rem;
+      border-bottom: 4px solid black;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #111;
+      text-align: center;
     }
 
     .player-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 auto;
-      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
 
-    .player-item {
+    .player-row {
+      background: linear-gradient(90deg, #ab1a3d, #1a2ca3);
       padding: 1rem;
-      border-bottom: 1px solid #ccc;
+      border-radius: 8px;
+      color: #fff;
       display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
+      justify-content: space-between;
       align-items: center;
-      background-color: rgba(255, 255, 255, 0.05);
+      flex-wrap: wrap;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
 
     .player-name {
-      font-size: 1.3rem;
       font-weight: bold;
-      flex: 1 1 100%;
+      font-size: 1.2rem;
     }
 
-    .stat-label {
-      font-weight: bold;
-      margin-right: 0.3rem;
-    }
-
-    .stat-group {
-      flex: 1 1 200px;
-    }
-
-    nav ul {
-      list-style: none;
+    .player-stats {
       display: flex;
-      justify-content: center;
-      gap: 2rem;
-      padding: 1rem;
-      background: linear-gradient(to right, red, blue);
-      margin: 0;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.95rem;
     }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
+    .stat {
+      min-width: 120px;
     }
 
-    nav a:hover {
-      text-decoration: underline;
+    @media (max-width: 600px) {
+      .player-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <ul>
-      <li><a href="index.html">About</a></li>
-      <li><a href="roster.html">Roster</a></li>
-      <li><a href="conditioning-drills.html">Conditioning & Drills</a></li>
-      <li><a href="Soccer-Drills.html">Soccer Drills</a></li>
-      <li><a href="Contact-Coach.html">Contact</a></li>
-    </ul>
-  </nav>
+  <div class="site-wrapper">
+    <!-- Navigation -->
+    <header>
+      <h1>Coach Castro Rueda</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">About</a></li>
+          <li><a href="roster.html">Roster</a></li>
+          <li><a href="conditioning-drills.html">Conditioning & Drills</a></li>
+          <li><a href="Soccer-Drills.html">Soccer Drills</a></li>
+          <li><a href="Contact-Coach.html">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
 
-  <img src="pictures/25-26seasonbanner.png" alt="Season Banner" class="season-banner" />
+    <!-- Banner -->
+    <img src="../pictures/25-26seasonbanner.png" alt="Season Banner" class="banner" />
 
-  <section class="season-container">
-    <h2 style="text-align:center; margin-bottom: 2rem;">2025-2026 Season Stats</h2>
-    <ul class="player-list" id="stats-list"></ul>
-  </section>
+    <!-- Content -->
+    <div class="container">
+      <h2>Team Season Stats</h2>
+      <div id="player-list" class="player-list"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 Coach Castro Rueda. All rights reserved.</p>
+    </footer>
+  </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyAPEpoiMCgELVnRCLPYhpgMSpQeQLKMLA4",
       authDomain: "coach-castro-rueda.firebaseapp.com",
       projectId: "coach-castro-rueda",
       storageBucket: "coach-castro-rueda.appspot.com",
-      messagingSenderId: "685578915022",
-      appId: "1:685578915022:web:64820ead8ed4a31b17149f"
+      messagingSenderId: "601575073957",
+      appId: "1:601575073957:web:1d1593fbb0142cc6a6d5a5"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
-    const statsList = document.getElementById("stats-list");
+    const colRef = collection(db, "season-stats-25-26");
 
     async function loadStats() {
-      const querySnapshot = await getDocs(collection(db, "season-stats-25-26"));
+      const snapshot = await getDocs(colRef);
+      const container = document.getElementById("player-list");
 
-      querySnapshot.forEach((doc) => {
+      snapshot.forEach(doc => {
         const data = doc.data();
-        const passAccuracy = data["Completed Passes"] && data["Attempted Passes"] ?
-          ((Number(data["Completed Passes"]) / Number(data["Attempted Passes"])) * 100).toFixed(1) + "%" : "N/A";
+        const name = data.Name || "Unnamed Player";
+        const number = data.Number || "-";
+        const goals = data.Goals || 0;
+        const assists = data.Assists || 0;
+        const saves = data.Saves || 0;
+        const shots = data["Shots-On-Target"] || 0;
+        const games = data["Games Played"] || 0;
+        const completed = Number(data["Completed Passes"] || 0);
+        const attempted = Number(data["Attempted Passes"] || 0);
+        const passAcc = attempted > 0 ? ((completed / attempted) * 100).toFixed(1) + "%" : "N/A";
 
-        const li = document.createElement("li");
-        li.className = "player-item";
-        li.innerHTML = `
-          <div class="player-name">${data.Name || "Unnamed Player"} (#${data.Number || "--"})</div>
-          <div class="stat-group"><span class="stat-label">Goals:</span> ${data.Goals || 0}</div>
-          <div class="stat-group"><span class="stat-label">Assists:</span> ${data.Assists || 0}</div>
-          <div class="stat-group"><span class="stat-label">Shots on Target:</span> ${data["Shots-On-Target"] || 0}</div>
-          <div class="stat-group"><span class="stat-label">Saves:</span> ${data.Saves || 0}</div>
-          <div class="stat-group"><span class="stat-label">Games Played:</span> ${data["Games Played"] || 0}</div>
-          <div class="stat-group"><span class="stat-label">Pass Accuracy:</span> ${passAccuracy}</div>
+        const playerRow = document.createElement("div");
+        playerRow.className = "player-row";
+        playerRow.innerHTML = `
+          <div class="player-name">${name} (#${number})</div>
+          <div class="player-stats">
+            <div class="stat">Goals: ${goals}</div>
+            <div class="stat">Assists: ${assists}</div>
+            <div class="stat">Saves: ${saves}</div>
+            <div class="stat">Shots-On-Target: ${shots}</div>
+            <div class="stat">Games Played: ${games}</div>
+            <div class="stat">Pass Accuracy: ${passAcc}</div>
+          </div>
         `;
-        statsList.appendChild(li);
+        container.appendChild(playerRow);
       });
     }
 
