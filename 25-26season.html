@@ -3,49 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>25-26 Season - Team Stats</title>
+  <title>25-26 Season - Coach Castro Rueda</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: #D3BC8D;
-      margin: 0;
-      padding: 0;
-    }
-    .banner {
-      width: 100%;
-      max-height: 300px;
-      object-fit: cover;
-      display: block;
-    }
-    .season-stats {
-      padding: 2rem;
-    }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-    .stat-card {
-      background: linear-gradient(to bottom right, #c82333, #0056b3);
-      color: white;
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-    .stat-card h3 {
-      margin-top: 0;
-      font-size: 1.25rem;
-      border-bottom: 1px solid rgba(255,255,255,0.3);
-      padding-bottom: 0.25rem;
-    }
-    .stat-card p {
-      margin: 0.3rem 0;
-    }
-  </style>
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
-    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAPEpoiMCgELVnRCLPYhpgMSpQeQLKMLA4",
@@ -53,35 +15,75 @@
       projectId: "coach-castro-rueda",
       storageBucket: "coach-castro-rueda.appspot.com",
       messagingSenderId: "685578915022",
-      appId: "1:685578915022:web:64820ead8ed4a31b17149f",
-      measurementId: "G-Y86PFCV9TE"
+      appId: "1:685578915022:web:64820ead8ed4a31b17149f"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
     window.addEventListener("DOMContentLoaded", async () => {
-      const statsContainer = document.getElementById("stats-grid");
-      const statsRef = collection(db, "season-stats-25-26");
-      const snapshot = await getDocs(statsRef);
+      const container = document.getElementById("stats-container");
+      const snapshot = await getDocs(collection(db, "season-stats-25-26"));
 
-      snapshot.forEach((docSnap) => {
-        const data = docSnap.data();
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+
         const card = document.createElement("div");
-        card.className = "stat-card";
+        card.className = "player-card";
+
+        const name = data.Name || "Unnamed Player";
+        const goals = data.Goals || 0;
+        const assists = data.Assists || 0;
+        const completed = data["Completed Passes"] || 0;
+        const attempted = data["Attempted Passes"] || 0;
+        const passAccuracy = attempted > 0 ? ((completed / attempted) * 100).toFixed(1) + "%" : "N/A";
+        const games = data["Games Played"] || 0;
 
         card.innerHTML = `
-          <h3>${data.name || 'Unnamed Player'}</h3>
-          <p><strong>Goals:</strong> ${data.goals || 0}</p>
-          <p><strong>Assists:</strong> ${data.assists || 0}</p>
-          <p><strong>Pass Accuracy:</strong> ${data.passAccuracy || 'N/A'}%</p>
-          <p><strong>Games Played:</strong> ${data.gamesPlayed || 0}</p>
+          <h3>${name}</h3>
+          <p><strong>Goals:</strong> ${goals}</p>
+          <p><strong>Assists:</strong> ${assists}</p>
+          <p><strong>Pass Accuracy:</strong> ${passAccuracy}</p>
+          <p><strong>Games Played:</strong> ${games}</p>
         `;
 
-        statsContainer.appendChild(card);
+        container.appendChild(card);
       });
     });
   </script>
+  <style>
+    .season-banner {
+      width: 100%;
+      max-width: 100%;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    #stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .player-card {
+      background: linear-gradient(145deg, #ac2e43, #0033cc);
+      padding: 1.5rem;
+      color: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .player-card h3 {
+      margin-top: 0;
+      border-bottom: 1px solid white;
+      padding-bottom: 0.5rem;
+    }
+
+    .player-card p {
+      margin: 0.25rem 0;
+    }
+  </style>
 </head>
 <body>
   <div class="site-wrapper">
@@ -98,11 +100,12 @@
       </nav>
     </header>
 
-    <img src="pictures/25-26seasonbanner.png" alt="25-26 Season Banner" class="banner" />
-
-    <main class="season-stats">
-      <h2>Team Season Stats</h2>
-      <div id="stats-grid" class="stats-grid"></div>
+    <main style="padding: 1rem;">
+      <img src="pictures/25-26seasonbanner.png" alt="Season Banner" class="season-banner" />
+      <section>
+        <h2 style="text-align: center;">Team Season Stats</h2>
+        <div id="stats-container"></div>
+      </section>
     </main>
 
     <footer>
