@@ -3,115 +3,141 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>25-26 Season - Coach Castro Rueda</title>
-  <link rel="stylesheet" href="style.css" />
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAPEpoiMCgELVnRCLPYhpgMSpQeQLKMLA4",
-      authDomain: "coach-castro-rueda.firebaseapp.com",
-      projectId: "coach-castro-rueda",
-      storageBucket: "coach-castro-rueda.appspot.com",
-      messagingSenderId: "685578915022",
-      appId: "1:685578915022:web:64820ead8ed4a31b17149f"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    window.addEventListener("DOMContentLoaded", async () => {
-      const container = document.getElementById("stats-container");
-      const snapshot = await getDocs(collection(db, "season-stats-25-26"));
-
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-
-        const card = document.createElement("div");
-        card.className = "player-card";
-
-        const name = data.Name || "Unnamed Player";
-        const goals = data.Goals || 0;
-        const assists = data.Assists || 0;
-        const completed = data["Completed Passes"] || 0;
-        const attempted = data["Attempted Passes"] || 0;
-        const passAccuracy = attempted > 0 ? ((completed / attempted) * 100).toFixed(1) + "%" : "N/A";
-        const games = data["Games Played"] || 0;
-
-        card.innerHTML = `
-          <h3>${name}</h3>
-          <p><strong>Goals:</strong> ${goals}</p>
-          <p><strong>Assists:</strong> ${assists}</p>
-          <p><strong>Pass Accuracy:</strong> ${passAccuracy}</p>
-          <p><strong>Games Played:</strong> ${games}</p>
-        `;
-
-        container.appendChild(card);
-      });
-    });
-  </script>
+  <title>25-26 Season Stats</title>
+  <link rel="stylesheet" href="../style.css" />
   <style>
-    .season-banner {
+    body {
+      background-color: #D3BC8D;
+      font-family: 'Montserrat', sans-serif;
+      color: #222;
+      padding: 0;
+      margin: 0;
+    }
+
+    .banner {
       width: 100%;
-      max-width: 100%;
       display: block;
+      margin-bottom: 2rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
       margin-bottom: 1rem;
+      color: #111;
     }
 
-    #stats-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
+    .player-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
 
-    .player-card {
-      background: linear-gradient(145deg, #ac2e43, #0033cc);
-      padding: 1.5rem;
-      color: white;
-      border-radius: 12px;
-      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    .player-row {
+      background: linear-gradient(90deg, #ab1a3d, #1a2ca3);
+      padding: 1rem;
+      border-radius: 8px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
 
-    .player-card h3 {
-      margin-top: 0;
-      border-bottom: 1px solid white;
-      padding-bottom: 0.5rem;
+    .player-name {
+      font-weight: bold;
+      font-size: 1.2rem;
     }
 
-    .player-card p {
-      margin: 0.25rem 0;
+    .player-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .stat {
+      min-width: 120px;
+    }
+
+    @media (max-width: 600px) {
+      .player-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="site-wrapper">
-    <header>
-      <h1>Coach Castro Rueda</h1>
-      <nav>
-        <ul>
-          <li><a href="index.html">About</a></li>
-          <li><a href="roster.html">Roster</a></li>
-          <li><a href="conditioning-drills.html">Conditioning & Drills</a></li>
-          <li><a href="Soccer-Drills.html">Soccer Drills</a></li>
-          <li><a href="Contact-Coach.html">Contact</a></li>
-        </ul>
-      </nav>
-    </header>
+  <!-- Navigation bar will be included globally -->
 
-    <main style="padding: 1rem;">
-      <img src="pictures/25-26seasonbanner.png" alt="Season Banner" class="season-banner" />
-      <section>
-        <h2 style="text-align: center;">Team Season Stats</h2>
-        <div id="stats-container"></div>
-      </section>
-    </main>
+  <img src="../pictures/25-26seasonbanner.png" alt="Season Banner" class="banner" />
 
-    <footer>
-      <p>&copy; 2025 Coach Castro Rueda. All rights reserved.</p>
-    </footer>
+  <div class="container">
+    <h2>Team Season Stats</h2>
+    <div id="player-list" class="player-list"></div>
   </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "coach-castro-rueda.firebaseapp.com",
+      projectId: "coach-castro-rueda",
+      storageBucket: "coach-castro-rueda.appspot.com",
+      messagingSenderId: "601575073957",
+      appId: "1:601575073957:web:1d1593fbb0142cc6a6d5a5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const colRef = collection(db, "season-stats-25-26");
+
+    async function loadStats() {
+      const snapshot = await getDocs(colRef);
+      const container = document.getElementById("player-list");
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const name = data.Name || "Unnamed Player";
+        const number = data.Number || "-";
+        const goals = data.Goals || 0;
+        const assists = data.Assists || 0;
+        const saves = data.Saves || 0;
+        const shots = data["Shots-On-Target"] || 0;
+        const games = data["Games Played"] || 0;
+        const completed = Number(data["Completed Passes"] || 0);
+        const attempted = Number(data["Attempted Passes"] || 0);
+        const passAcc = attempted > 0 ? ((completed / attempted) * 100).toFixed(1) + "%" : "N/A";
+
+        const playerRow = document.createElement("div");
+        playerRow.className = "player-row";
+        playerRow.innerHTML = `
+          <div class="player-name">${name} (#${number})</div>
+          <div class="player-stats">
+            <div class="stat">Goals: ${goals}</div>
+            <div class="stat">Assists: ${assists}</div>
+            <div class="stat">Saves: ${saves}</div>
+            <div class="stat">Shots-On-Target: ${shots}</div>
+            <div class="stat">Games Played: ${games}</div>
+            <div class="stat">Pass Accuracy: ${passAcc}</div>
+          </div>
+        `;
+        container.appendChild(playerRow);
+      });
+    }
+
+    loadStats();
+  </script>
 </body>
 </html>
+
 
