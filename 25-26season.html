@@ -9,28 +9,57 @@
     body {
       background-color: #D3BC8D;
       font-family: 'Montserrat', sans-serif;
-      color: #222;
       margin: 0;
       padding: 0;
+      color: #222;
+    }
+
+    header {
+      background: linear-gradient(to right, red, blue);
+      padding: 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      color: white;
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0;
+      margin-top: 0.5rem;
+      gap: 1rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
     }
 
     .banner {
       width: 100%;
+      height: auto;
       display: block;
-      margin-bottom: 2rem;
+      max-height: 300px;
+      object-fit: cover;
       border-bottom: 4px solid black;
     }
 
     .container {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 1rem;
+      padding: 2rem 1rem;
     }
 
     h2 {
       font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: #111;
+      margin-bottom: 1.5rem;
       text-align: center;
     }
 
@@ -41,34 +70,40 @@
     }
 
     .player-row {
-      background: linear-gradient(90deg, #ab1a3d, #1a2ca3);
+      background: linear-gradient(to right, #ab1a3d, #1a2ca3);
+      color: white;
       padding: 1rem;
-      border-radius: 8px;
-      color: #fff;
+      border-radius: 10px;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      font-size: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
 
     .player-name {
       font-weight: bold;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
 
     .player-stats {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
-      font-size: 0.95rem;
     }
 
     .stat {
       min-width: 120px;
     }
 
-    @media (max-width: 600px) {
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #444;
+    }
+
+    @media (max-width: 768px) {
       .player-row {
         flex-direction: column;
         align-items: flex-start;
@@ -77,36 +112,30 @@
   </style>
 </head>
 <body>
-  <div class="site-wrapper">
-    <!-- Navigation -->
-    <header>
-      <h1>Coach Castro Rueda</h1>
-      <nav>
-        <ul>
-          <li><a href="index.html">About</a></li>
-          <li><a href="roster.html">Roster</a></li>
-          <li><a href="conditioning-drills.html">Conditioning & Drills</a></li>
-          <li><a href="Soccer-Drills.html">Soccer Drills</a></li>
-          <li><a href="Contact-Coach.html">Contact</a></li>
-        </ul>
-      </nav>
-    </header>
+  <!-- Site Navigation -->
+  <header>
+    <h1>Coach Castro Rueda</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">About</a></li>
+        <li><a href="roster.html">Roster</a></li>
+        <li><a href="conditioning-drills.html">Conditioning & Drills</a></li>
+        <li><a href="Soccer-Drills.html">Soccer Drills</a></li>
+        <li><a href="Contact-Coach.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- Banner -->
-    <img src="../pictures/25-26seasonbanner.png" alt="Season Banner" class="banner" />
+  <!-- Banner -->
+  <img src="../pictures/25-26seasonbanner.png" alt="Season Banner" class="banner" />
 
-    <!-- Content -->
-    <div class="container">
-      <h2>Team Season Stats</h2>
-      <div id="player-list" class="player-list"></div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-      <p>&copy; 2025 Coach Castro Rueda. All rights reserved.</p>
-    </footer>
+  <!-- Stats Section -->
+  <div class="container">
+    <h2>Team Season Stats</h2>
+    <div id="player-list" class="player-list"></div>
   </div>
 
+  <!-- Firebase Script -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
     import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
