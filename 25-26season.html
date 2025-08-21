@@ -7,28 +7,107 @@
   <!-- was ../style.css -->
   <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      background-color: #D3BC8D;
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #222;
-    }
-    header { background: linear-gradient(to right, red, blue); padding: 1rem; text-align: center; }
-    header h1 { color: white; margin: 0; font-size: 2rem; }
-    nav ul { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; padding: 0; margin-top: 0.5rem; gap: 1rem; }
-    nav a { text-decoration: none; color: white; font-weight: bold; }
-    .banner { width: 100%; height: auto; display: block; max-height: 300px; object-fit: cover; border-bottom: 4px solid black; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
-    h2 { font-size: 1.8rem; margin-bottom: 1.5rem; text-align: center; }
-    .player-list { display: flex; flex-direction: column; gap: 1rem; }
-    .player-row { background: linear-gradient(to right, #ab1a3d, #1a2ca3); color: white; padding: 1rem; border-radius: 10px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; font-size: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-    .player-name { font-weight: bold; font-size: 1.1rem; }
-    .player-stats { display: flex; flex-wrap: wrap; gap: 1rem; }
-    .stat { min-width: 120px; }
-    footer { text-align: center; padding: 2rem; color: #444; }
-    @media (max-width: 768px) { .player-row { flex-direction: column; align-items: flex-start; } }
-  </style>
+  body {
+    background-color: #D3BC8D;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #222;
+  }
+
+  header {
+    background: linear-gradient(to right, red, blue);
+    padding: 1rem;
+    text-align: center;
+  }
+  header h1 { color: white; margin: 0; font-size: 2rem; }
+  nav ul { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; padding: 0; margin-top: 0.5rem; gap: 1rem; }
+  nav a { text-decoration: none; color: white; font-weight: bold; }
+
+  /* Banner at the top (unchanged) */
+  .banner { width: 100%; height: auto; display: block; max-height: 300px; object-fit: cover; border-bottom: 4px solid black; }
+
+  /* === STATS SECTION BACKGROUND === */
+  .stats-wrap {
+    position: relative;
+    /* Use your new background image here: */
+    background: url("pictures/season-bg.png") center/cover no-repeat fixed;
+    /* fallback color behind image while it loads */
+    background-color: #142047;
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+  }
+  /* Soft dark overlay for readability */
+  .stats-wrap::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.45));
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative; /* sits above the overlay */
+    max-width: 950px;          /* tighter width */
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+  }
+
+  h2 {
+    font-size: 1.9rem;
+    margin: 1.25rem 0 1.25rem;
+    text-align: center;
+    color: #fff;               /* readable over bg */
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  }
+
+  .player-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;              /* less space between rows */
+  }
+
+  /* === COMPACT ROWS WITH GLASS LOOK === */
+  .player-row {
+    background: rgba(20, 20, 40, 0.35);       /* translucent */
+    color: #fff;
+    padding: 0.65rem 0.85rem;                 /* smaller */
+    border-radius: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;                       /* smaller text */
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    backdrop-filter: blur(6px);               /* glass effect */
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .player-name {
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.2px;
+  }
+
+  .player-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;                         /* tighter gaps */
+  }
+
+  .stat {
+    min-width: 115px;                         /* a bit smaller */
+    opacity: 0.95;
+  }
+
+  footer { text-align: center; padding: 2rem; color: #eee; }
+
+  @media (max-width: 768px) {
+    .player-row { flex-direction: column; align-items: flex-start; }
+    .container { padding: 1.25rem 0.75rem 2rem; }
+    .stat { min-width: 48%; }                 /* better wrap on phones */
+  }
+</style>
+
 </head>
 <body>
   <header>
