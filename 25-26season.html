@@ -2,205 +2,311 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>25-26 Season Stats</title>
-
-  <!-- Your site stylesheet lives next to this file -->
+  <title>2025–26 Season Stats (Hidden)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Use your global site CSS -->
   <link rel="stylesheet" href="style.css" />
 
   <style>
-    /* --- Base --- */
-    body {
-      background-color: #D3BC8D;
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #222;
+    :root{
+      --site-gold:#D3BC8D;
+      --dark:#222;
+      --card-bg: rgba(255,255,255,0.9);
+      --shadow: 0 12px 24px rgba(0,0,0,0.15);
+      --red:#c8102e;
+      --blue:#0a4dd3;
+    }
+    body{
+      background: var(--site-gold);
+      margin:0;
+      color:var(--dark);
     }
 
-    header {
-      background: linear-gradient(to right, red, blue);
-      padding: 1rem;
-      text-align: center;
+    /* Header / nav consistent with site */
+    header.site-header {
+      border-bottom: 3px solid #000;
+      background: linear-gradient(90deg, var(--red) 0%, var(--blue) 100%);
+      color:#fff;
+      padding:12px 16px;
     }
-    header h1 { color: white; margin: 0; font-size: 2rem; }
+    header .brand { font-weight:700; letter-spacing:0.5px; }
+    nav.site-nav a{ color:#fff; text-decoration:none; margin-right:16px; font-weight:600; }
+    nav.site-nav a:hover{ text-decoration:underline; }
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      padding: 0;
-      margin-top: 0.5rem;
-      gap: 1rem;
+    /* Banner hero */
+    .season-hero{
+      position:relative;
+      min-height:260px;
+      background: url('pictures/season-bg.png') center/cover no-repeat;
+      border-bottom:3px solid #000;
+      display:grid;
+      place-items:center;
+      text-align:center;
     }
-    nav a { text-decoration: none; color: white; font-weight: bold; }
+    .season-hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.5));
+    }
+    .season-hero .title{
+      position:relative; z-index:1;
+      color:#fff;
+      text-shadow:0 3px 10px rgba(0,0,0,0.4);
+      padding:24px 16px;
+    }
+    .season-hero h1{ margin:0; font-size: clamp(24px, 3vw, 40px); }
+    .season-hero p{ margin:6px 0 0; opacity:0.95; }
 
-    /* Top banner image (keep or remove as you like) */
-    .banner {
-      width: 100%;
-      height: auto;
-      display: block;
-      max-height: 300px;
-      object-fit: cover;
-      border-bottom: 4px solid black;
-    }
-
-    /* --- Stats Section with background image --- */
-    .stats-wrap {
-      position: relative;
-      background: url("pictures/season-bg.png") center/cover no-repeat fixed;
-      background-color: #142047; /* fallback while image loads */
-      border-top: 4px solid black;
-      border-bottom: 4px solid black;
-    }
-    /* soft overlay for readability */
-    .stats-wrap::before {
-      content: "";
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.45));
-      pointer-events: none;
+    /* Content wrapper */
+    .container{
+      max-width:1100px; margin:24px auto 64px; padding:0 16px;
     }
 
-    .container {
-      position: relative; /* above overlay */
-      max-width: 950px;              /* tighter width */
-      margin: 0 auto;
-      padding: 2rem 1rem 3rem;
+    /* Banner strip heading for list */
+    .banner-strip{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 14px;
+      background: linear-gradient(90deg, var(--red) 0%, var(--blue) 100%);
+      color:#fff; border-radius:14px; box-shadow: var(--shadow);
+      margin-bottom:14px;
+    }
+    .banner-strip .filters{
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .select, .search {
+      background:#fff; border:1px solid #ddd; border-radius:10px; padding:8px 10px; color:#111;
+      font-size:15px;
     }
 
-    h2 {
-      font-size: 1.9rem;
-      margin: 1.25rem 0 1.25rem;
-      text-align: center;
-      color: #fff;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    /* Stats list (cards) */
+    .stats-list{
+      display:grid; gap:12px;
+    }
+    .stat-card{
+      background:var(--card-bg); border:1px solid rgba(0,0,0,0.08);
+      border-radius:16px; box-shadow: var(--shadow); padding:14px;
+      display:grid; grid-template-columns: 1fr auto; gap:8px 16px;
+      align-items:center;
+    }
+    .stat-left{
+      min-width:0;
+    }
+    .player-line{
+      display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;
+    }
+    .player-name{ font-size:18px; font-weight:800; }
+    .player-number{
+      background:#111; color:#fff; font-weight:800; border-radius:999px; padding:3px 8px; min-width:34px; text-align:center;
+    }
+    .metric-line{
+      display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:6px; font-size:14px;
+    }
+    .pill{
+      background:#efefef; border:1px solid #ddd; border-radius:999px; padding:4px 10px; font-weight:600;
+    }
+    .stat-right{
+      text-align:right; font-weight:800; font-size:18px;
+    }
+    .muted{ opacity:0.8; }
+    footer.site-footer{
+      border-top:3px solid #000; padding:24px 16px; text-align:center; background:#f3f3f3;
     }
 
-    .player-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;                  /* reduced spacing */
-    }
-
-    /* compact, glassy rows */
-    .player-row {
-      background: rgba(20, 20, 40, 0.35);
-      color: #fff;
-      padding: 0.65rem 0.85rem;      /* smaller */
-      border-radius: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.95rem;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.25);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-
-    .player-name {
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: 0.2px;
-    }
-
-    .player-stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem 1rem;              /* tighter gaps */
-    }
-
-    .stat { min-width: 115px; opacity: 0.95; }
-
-    footer { text-align: center; padding: 2rem; color: #eee; }
-
-    @media (max-width: 768px) {
-      .player-row { flex-direction: column; align-items: flex-start; }
-      .container { padding: 1.25rem 0.75rem 2rem; }
-      .stat { min-width: 48%; }
+    @media (max-width:720px){
+      .stat-card{ grid-template-columns: 1fr; text-align:left; }
+      .stat-right{ text-align:left; }
     }
   </style>
 </head>
 <body>
-  <!-- Site Navigation -->
-  <header>
-    <h1>Coach Castro Rueda</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">About</a></li>
-        <li><a href="roster.html">Roster</a></li>
-        <li><a href="conditioning-drills.html">Conditioning & Drills</a></li>
-        <li><a href="Soccer-Drills.html">Soccer Drills</a></li>
-        <li><a href="Contact-Coach.html">Contact</a></li>
-      </ul>
+  <header class="site-header">
+    <div class="brand">Coach Castro Rueda</div>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="about-coach.html">About</a>
+      <a href="roster.html">Roster</a>
+      <a href="conditioning-drills.html">Conditioning</a>
+      <a href="Soccer-Drills.html">Soccer Drills</a>
+      <a href="Contact-Coach.html">Contact</a>
+      <!-- Intentionally no nav link to this hidden page -->
     </nav>
   </header>
 
-  <!-- Top banner (optional). Remove this <img> if you don't want a banner above the stats. -->
-  <img src="pictures/25-26seasonbanner.png" alt="Season Banner" class="banner" />
-
-  <!-- Stats Section with background -->
-  <div class="stats-wrap">
-    <div class="container">
-      <h2>Team Season Stats</h2>
-      <div id="player-list" class="player-list"></div>
+  <section class="season-hero" role="img" aria-label="Season banner background">
+    <div class="title">
+      <h1>2025–26 Season</h1>
+      <p>Live team stats & focus areas (read from Google Sheets)</p>
     </div>
-  </div>
+  </section>
 
-  <!-- Firebase Script -->
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
-    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+  <main class="container">
+    <div class="banner-strip">
+      <div><strong>Season Stats</strong></div>
+      <div class="filters">
+        <input id="search" class="search" type="search" placeholder="Search player…" />
+        <select id="sort" class="select" aria-label="Sort by">
+          <option value="goals:desc">Goals (high → low)</option>
+          <option value="assists:desc">Assists (high → low)</option>
+          <option value="accuracy:desc">Pass Accuracy (high → low)</option>
+          <option value="sot:desc">Shots On Target (high → low)</option>
+          <option value="name:asc">Name (A → Z)</option>
+        </select>
+      </div>
+    </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAPEpoiMCgELVnRCLPYhpgMSpQeQLKMLA4",
-      authDomain: "coach-castro-rueda.firebaseapp.com",
-      projectId: "coach-castro-rueda",
-      storageBucket: "coach-castro-rueda.appspot.com",
-      messagingSenderId: "601575073957",
-      appId: "1:601575073957:web:1d1593fbb0142cc6a6d5a5"
-    };
+    <section id="stats" class="stats-list" aria-live="polite"></section>
+    <p id="error" style="display:none; color:#b00020; font-weight:700; margin-top:16px;">
+      Couldn’t load season stats. Make sure the sheet tab is <em>Published to the web</em> (File → Share → Publish to web).
+    </p>
+  </main>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const colRef = collection(db, "season-stats-25-26");
+  <footer class="site-footer">
+    © <span id="year"></span> Coach Castro Rueda
+  </footer>
 
-    async function loadStats() {
-      const snapshot = await getDocs(colRef);
-      const container = document.getElementById("player-list");
+  <script>
+    // === Config ===
+    const STATS_SHEET_ID = "1rPnlSN0b2wWV2FuHRaDkphsKhsGjD-rg83rfAcMLtGE";
+    const STATS_GID = "0";
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const name = data.Name || "Unnamed Player";
-        const number = data.Number || "-";
-        const goals = data.Goals || 0;
-        const assists = data.Assists || 0;
-        const saves = data.Saves || 0;
-        const shots = data["Shots-On-Target"] || 0;
-        const games = data["Games Played"] || 0;
-        const completed = Number(data["Completed Passes"] || 0);
-        const attempted = Number(data["Attempted Passes"] || 0);
-        const passAcc = attempted > 0 ? ((completed / attempted) * 100).toFixed(1) + "%" : "N/A";
-
-        const row = document.createElement("div");
-        row.className = "player-row";
-        row.innerHTML = `
-          <div class="player-name">${name} (#${number})</div>
-          <div class="player-stats">
-            <div class="stat">Goals: ${goals}</div>
-            <div class="stat">Assists: ${assists}</div>
-            <div class="stat">Saves: ${saves}</div>
-            <div class="stat">Shots-On-Target: ${shots}</div>
-            <div class="stat">Games Played: ${games}</div>
-            <div class="stat">Pass Accuracy: ${passAcc}</div>
-          </div>
-        `;
-        container.appendChild(row);
+    // === Helpers ===
+    function parseGViz(raw) {
+      const start = raw.indexOf('(');
+      const end = raw.lastIndexOf(')');
+      return JSON.parse(raw.slice(start + 1, end));
+    }
+    function toRows(json) {
+      const cols = json.table.cols.map(c => (c.label || c.id || "").trim());
+      return json.table.rows.map(r => {
+        const obj = {};
+        r.c.forEach((cell, i) => {
+          obj[cols[i] || ("Col" + i)] = cell ? (cell.v ?? cell.f ?? "") : "";
+        });
+        return obj;
       });
     }
+    const n = (x) => {
+      const v = Number(x);
+      return Number.isFinite(v) ? v : 0;
+    };
+    function pct(num, den) {
+      if (!den || n(den) === 0) return "—";
+      return Math.round((n(num) / n(den)) * 100) + "%";
+    }
+
+    function sortRows(rows, sortKey) {
+      const [key, dir] = sortKey.split(':');
+      const mul = dir === 'desc' ? -1 : 1;
+
+      return [...rows].sort((a,b) => {
+        const av = (key === 'name') ? String(a["Name"] || "").toLowerCase()
+                                    : (key === 'accuracy') ? (n(a["Completed Passes"]) && n(a["Attempted Passes"]) ? (n(a["Completed Passes"]) / Math.max(1, n(a["Attempted Passes"]))) : -1)
+                                    : (key === 'sot') ? n(a["Shots-On-Target"])
+                                    : (key === 'assists') ? n(a["Assists"])
+                                    : (key === 'goals') ? n(a["Goals"])
+                                    : 0;
+
+        const bv = (key === 'name') ? String(b["Name"] || "").toLowerCase()
+                                    : (key === 'accuracy') ? (n(b["Completed Passes"]) && n(b["Attempted Passes"]) ? (n(b["Completed Passes"]) / Math.max(1, n(b["Attempted Passes"]))) : -1)
+                                    : (key === 'sot') ? n(b["Shots-On-Target"])
+                                    : (key === 'assists') ? n(b["Assists"])
+                                    : (key === 'goals') ? n(b["Goals"])
+                                    : 0;
+
+        if (av < bv) return -1 * mul;
+        if (av > bv) return  1 * mul;
+        return 0;
+      });
+    }
+
+    function pill(label, value) {
+      if (value === "" || value === null || typeof value === "undefined") return "";
+      return `<span class="pill"><strong>${label}:</strong> ${value}</span>`;
+    }
+
+    function renderStats(rows) {
+      const q = document.getElementById('search').value.trim().toLowerCase();
+      const sortVal = document.getElementById('sort').value;
+
+      // Filter
+      let filtered = rows.filter(r => {
+        const name = String(r["Name"] || "").toLowerCase();
+        const number = String(r["Number"] || "");
+        return !q || name.includes(q) || number.includes(q);
+      });
+
+      // Prepare derived field
+      filtered = filtered.map(r => {
+        const completed = n(r["Completed Passes"]);
+        const attempted = n(r["Attempted Passes"]);
+        return {
+          ...r,
+          __accuracy: pct(completed, attempted)
+        };
+      });
+
+      // Sort
+      filtered = sortRows(filtered, sortVal);
+
+      // Render
+      const box = document.getElementById('stats');
+      box.innerHTML = "";
+
+      filtered.forEach(r => {
+        const name   = r["Name"] || "Unnamed";
+        const number = r["Number"] || "—";
+        const goals  = n(r["Goals"]);
+        const ast    = n(r["Assists"]);
+        const saves  = n(r["Saves"]);
+        const sot    = n(r["Shots-On-Target"]);
+        const games  = n(r["Games Played"]);
+        const acc    = r.__accuracy;
+
+        const card = document.createElement('article');
+        card.className = "stat-card";
+        card.innerHTML = `
+          <div class="stat-left">
+            <div class="player-line">
+              <span class="player-name">${name}</span>
+              <span class="player-number">#${number}</span>
+            </div>
+            <div class="metric-line">
+              ${pill("Goals", goals)}
+              ${pill("Assists", ast)}
+              ${pill("Shots On Target", sot)}
+              ${pill("Saves", saves)}
+              ${pill("Games", games)}
+              ${pill("Pass Acc", acc)}
+            </div>
+          </div>
+          <div class="stat-right">
+            <div>Goals <span class="muted">|</span> ${goals}</div>
+            <div>Pass Acc <span class="muted">|</span> ${acc}</div>
+          </div>
+        `;
+        box.appendChild(card);
+      });
+    }
+
+    async function loadStats() {
+      const url = `https://docs.google.com/spreadsheets/d/${STATS_SHEET_ID}/gviz/tq?tqx=out:json&gid=${STATS_GID}`;
+      try {
+        const raw = await fetch(url).then(r => r.text());
+        const json = parseGViz(raw);
+        const rows = toRows(json);
+        renderStats(rows);
+      } catch (e) {
+        console.error(e);
+        document.getElementById('error').style.display = "block";
+      }
+    }
+
+    document.getElementById('search').addEventListener('input', loadStats);
+    document.getElementById('sort').addEventListener('change', loadStats);
+    document.getElementById('year').textContent = new Date().getFullYear();
 
     loadStats();
   </script>
 </body>
 </html>
+
