@@ -2,157 +2,335 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roster - Coach Castro Rueda</title>
+  <title>Team Roster</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Use your global site CSS -->
   <link rel="stylesheet" href="style.css" />
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAPEpoiMCgELVnRCLPYhpgMSpQeQLKMLA4",
-      authDomain: "coach-castro-rueda.firebaseapp.com",
-      projectId: "coach-castro-rueda",
-      storageBucket: "coach-castro-rueda.firebasestorage.app",
-      messagingSenderId: "685578915022",
-      appId: "1:685578915022:web:64820ead8ed4a31b17149f",
-      measurementId: "G-Y86PFCV9TE"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    function normalizeKey(name, number) {
-      return `${(name || '').trim().toLowerCase().replace(/\s+/g, ' ')}|${(number || '').trim()}`;
+  <style>
+    /* Page-specific styles that won’t fight your site-wide CSS */
+    :root {
+      --site-gold: #D3BC8D;      /* global background */
+      --dark-text: #222;         /* readable text */
+      --card-bg: rgba(255,255,255,0.88);
+      --card-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      --accent: #0a4dd3;
+      --accent-2: #c8102e;
     }
 
-    function isBlank(player) {
-      return !player.name && !player.number && !player.position;
+    body {
+      background: var(--site-gold);
+      margin: 0;
+      padding: 0;
+      color: var(--dark-text);
     }
 
-    window.addEventListener("DOMContentLoaded", async () => {
-      const rosterBody = document.getElementById("roster-body");
-      const playersRef = collection(db, "coach-castro-rueda");
-      const snapshot = await getDocs(playersRef);
+    /* Header / nav – keeps your red→blue gradient vibe */
+    header.site-header {
+      border-bottom: 3px solid #000;
+      background: linear-gradient(90deg, #c8102e 0%, #0a4dd3 100%);
+      color: #fff;
+      padding: 12px 16px;
+    }
+    header .brand {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    nav.site-nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-right: 16px;
+      font-weight: 600;
+    }
+    nav.site-nav a:hover { text-decoration: underline; }
 
-      const seenKeys = new Map();
+    /* Hero background */
+    .roster-hero {
+      position: relative;
+      min-height: 240px;
+      background: url('pictures/soccerfieldcartoon.png') center/cover no-repeat;
+      border-bottom: 3px solid #000;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+    .roster-hero .overlay {
+      background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45));
+      position: absolute; inset: 0;
+    }
+    .roster-hero h1 {
+      position: relative;
+      margin: 0;
+      padding: 24px 16px;
+      color: #fff;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.4);
+      font-size: clamp(24px, 3vw, 40px);
+      z-index: 1;
+    }
 
-      for (const docSnap of snapshot.docs) {
-        const player = docSnap.data();
-        const key = normalizeKey(player.name, player.number);
+    /* Content area */
+    .container {
+      max-width: 1100px;
+      margin: 24px auto 64px;
+      padding: 0 16px;
+    }
 
-        if (isBlank(player)) {
-          await deleteDoc(doc(db, "coach-castro-rueda", docSnap.id));
-          continue;
-        }
+    .tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .search-input {
+      flex: 1 1 320px;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    .position-filter {
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: #fff;
+      font-size: 16px;
+    }
 
-        if (seenKeys.has(key)) {
-          await deleteDoc(doc(db, "coach-castro-rueda", docSnap.id));
-        } else {
-          seenKeys.set(key, { id: docSnap.id, ...player });
-        }
-      }
+    /* Roster list */
+    .roster-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .player-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .player-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .player-name {
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .player-number {
+      background: #111;
+      color: #fff;
+      font-weight: 800;
+      border-radius: 10px;
+      padding: 4px 10px;
+      min-width: 46px;
+      text-align: center;
+    }
+    .player-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .badge {
+      background: #efefef;
+      border: 1px solid #ddd;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-weight: 600;
+    }
+    details.stats {
+      border-top: 1px dashed #bbb;
+      padding-top: 8px;
+    }
+    details.stats summary {
+      cursor: pointer;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 16px;
+      font-size: 14px;
+    }
+    .note {
+      margin-top: 6px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
 
-      const players = Array.from(seenKeys.values());
-      players.sort((a, b) => Number(a.number) - Number(b.number));
+    footer.site-footer {
+      border-top: 3px solid #000;
+      padding: 24px 16px;
+      text-align: center;
+      background: #f3f3f3;
+    }
 
-      players.forEach((player) => {
-        const row = document.createElement("tr");
-        const fields = ["name", "number", "position", "agility", "speed", "passingL", "passingR", "dribbling", "shootingL", "shootingR", "soccerIQ", "attendance", "notes"];
-
-        fields.forEach((field) => {
-          const cell = document.createElement("td");
-
-          if (field === "name") {
-            const link = document.createElement("a");
-            link.href = "#";
-            link.textContent = player[field];
-            link.style.color = "#D3BC8D";
-            cell.appendChild(link);
-          } else if (field === "notes") {
-            const textarea = document.createElement("textarea");
-            textarea.value = player[field] || "";
-            textarea.rows = 1;
-            textarea.style.width = "100px";
-            textarea.title = player[field] || "";
-            textarea.addEventListener("input", () => {
-              textarea.title = textarea.value;
-            });
-            textarea.addEventListener("change", async () => {
-              await updateDoc(doc(db, "coach-castro-rueda", player.id), {
-                [field]: textarea.value
-              });
-            });
-            cell.appendChild(textarea);
-          } else {
-            const input = document.createElement("input");
-            input.type = field === "number" ? "number" : "text";
-            input.value = player[field] || "";
-            input.style.width = ["number", "position", "agility", "speed", "passingL", "passingR", "dribbling", "shootingL", "shootingR", "soccerIQ", "attendance"].includes(field) ? "60px" : "120px";
-            input.addEventListener("change", async () => {
-              await updateDoc(doc(db, "coach-castro-rueda", player.id), {
-                [field]: input.value
-              });
-            });
-            cell.appendChild(input);
-          }
-
-          row.appendChild(cell);
-        });
-
-        rosterBody.appendChild(row);
-      });
-    });
-  </script>
+    @media (max-width: 480px) {
+      .stat-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <div class="site-wrapper">
-    <header>
-      <h1>Coach Castro Rueda</h1>
-      <nav>
-        <ul>
-          <li><a href="index.html">About</a></li>
-          <li><a href="roster.html">Roster</a></li>
-          <li><a href="conditioning-drills.html">Conditioning & Drills</a></li>
-          <li><a href="Soccer-Drills.html">Soccer Drills</a></li>
-          <li><a href="Contact-Coach.html">Contact</a></li>
-        </ul>
-      </nav>
-    </header>
+  <header class="site-header">
+    <div class="brand">Coach Castro Rueda</div>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="about-coach.html">About</a>
+      <a href="roster.html" aria-current="page">Roster</a>
+      <a href="conditioning-drills.html">Conditioning</a>
+      <a href="Soccer-Drills.html">Soccer Drills</a>
+      <a href="Contact-Coach.html">Contact</a>
+    </nav>
+  </header>
 
-    <main class="roster" style="background-image: url('pictures/soccerfieldcartoon.png'); background-size: cover; background-position: center; padding: 2rem;">
-      <section class="roster-table" style="background-color: rgba(0, 0, 0, 0.75); padding: 2rem; border-radius: 12px; color: white; max-width: 100%; overflow-x: auto;">
-        <h2 style="text-align:center; margin-bottom: 1rem;">Team Roster</h2>
-        <table style="width:100%; border-collapse: collapse;">
-          <thead>
-            <tr>
-              <th>Player</th>
-              <th>#</th>
-              <th>Position</th>
-              <th>Agility</th>
-              <th>Speed (20m)</th>
-              <th>Passing (L)</th>
-              <th>Passing (R)</th>
-              <th>Dribbling</th>
-              <th>Shooting (L)</th>
-              <th>Shooting (R)</th>
-              <th>Soccer IQ</th>
-              <th>Attendance</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody id="roster-body">
-            <!-- Firebase data loads here -->
-          </tbody>
-        </table>
-      </section>
-    </main>
+  <section class="roster-hero" role="img" aria-label="Soccer field background">
+    <div class="overlay"></div>
+    <h1>Team Roster</h1>
+  </section>
 
-    <footer>
-      <p>&copy; 2025 Coach Castro Rueda. All rights reserved.</p>
-    </footer>
-  </div>
+  <main class="container">
+    <div class="tools">
+      <input id="search" class="search-input" type="search" placeholder="Search by name or number…" />
+      <select id="position" class="position-filter" aria-label="Filter by position">
+        <option value="">All Positions</option>
+        <option>GK</option><option>DF</option><option>MF</option><option>FW</option>
+      </select>
+    </div>
+
+    <section id="roster" class="roster-list" aria-live="polite"></section>
+    <p id="error" style="display:none; color:#b00020; font-weight:700; margin-top:16px;">
+      Couldn’t load the roster. Make sure the sheet tab is <em>Published to the web</em> (File → Share → Publish to web).
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    © <span id="year"></span> Coach Castro Rueda
+  </footer>
+
+  <script>
+    // === Config ===
+    const ROSTER_SHEET_ID = "1mnNpoDcRjVYpgEnhekq8oAvL4D7aXzpyUztai35_llM";
+    const ROSTER_GID = "0"; // first tab
+    // If you upload a new roster background later, change the URL below:
+    // document.querySelector('.roster-hero').style.backgroundImage = "url('pictures/NEW_ROSTER_BG.png')";
+
+    // === Helpers ===
+    function parseGViz(raw) {
+      const start = raw.indexOf('(');
+      const end = raw.lastIndexOf(')');
+      return JSON.parse(raw.slice(start + 1, end));
+    }
+    function toRows(json) {
+      const cols = json.table.cols.map(c => (c.label || c.id || "").trim());
+      return json.table.rows.map(r => {
+        const obj = {};
+        r.c.forEach((cell, i) => {
+          obj[cols[i] || ("Col" + i)] = cell ? (cell.v ?? cell.f ?? "") : "";
+        });
+        return obj;
+      });
+    }
+    function num(x) {
+      const n = Number(x);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function makeBadge(label, value) {
+      if (value === "" || value === null || typeof value === "undefined") return "";
+      return `<span class="badge">${label}: ${value}</span>`;
+    }
+
+    function renderRoster(rows) {
+      const q = document.getElementById('search').value.trim().toLowerCase();
+      const pos = document.getElementById('position').value;
+
+      const list = document.getElementById('roster');
+      list.innerHTML = "";
+
+      rows
+        .filter(row => {
+          const name = String(row["Name"] || row["Player"] || "").toLowerCase();
+          const number = String(row["Number"] || "").toLowerCase();
+          const matchesText = !q || name.includes(q) || number.includes(q);
+          const matchesPos = !pos || String(row["Position"] || "").toUpperCase() === pos;
+          return matchesText && matchesPos;
+        })
+        .forEach(row => {
+          const name = row["Name"] || row["Player"] || "Unnamed";
+          const number = row["Number"] || "";
+          const position = (row["Position"] || "").toString().toUpperCase();
+
+          const agility   = row["Agility T-test"] ?? row["Agility"] ?? "";
+          const speed20m  = row["Speed 20m"] ?? row["Speed"] ?? "";
+          const passL     = row["Passing Left"] ?? row["Passing L"] ?? "";
+          const passR     = row["Passing Right"] ?? row["Passing R"] ?? "";
+          const dribble   = row["Dribbling"] ?? "";
+          const shootL    = row["Shooting Left"] ?? row["Shooting L"] ?? "";
+          const shootR    = row["Shooting Right"] ?? row["Shooting R"] ?? "";
+          const iq        = row["Soccer IQ"] ?? row["IQ"] ?? "";
+          const attend    = row["Attendance"] ?? "";
+          const notes     = row["Notes"] ?? "";
+
+          const card = document.createElement('article');
+          card.className = "player-card";
+          card.innerHTML = `
+            <div class="player-head">
+              <div class="player-name">${name}</div>
+              <div class="player-number">#${number || "—"}</div>
+            </div>
+            <div class="player-meta">
+              ${makeBadge("Pos", position || "—")}
+              ${makeBadge("Agility", agility)}
+              ${makeBadge("Speed 20m", speed20m)}
+              ${makeBadge("Pass L", passL)}
+              ${makeBadge("Pass R", passR)}
+            </div>
+            <details class="stats">
+              <summary>Details & Stats</summary>
+              <div class="stat-grid">
+                <div><strong>Dribbling:</strong> ${dribble || "—"}</div>
+                <div><strong>Shooting L:</strong> ${shootL || "—"}</div>
+                <div><strong>Shooting R:</strong> ${shootR || "—"}</div>
+                <div><strong>Soccer IQ:</strong> ${iq || "—"}</div>
+                <div><strong>Attendance:</strong> ${attend || "—"}</div>
+              </div>
+              ${notes ? `<div class="note"><strong>Notes:</strong> ${notes}</div>` : ""}
+            </details>
+          `;
+          list.appendChild(card);
+        });
+    }
+
+    async function loadRoster() {
+      const url = `https://docs.google.com/spreadsheets/d/${ROSTER_SHEET_ID}/gviz/tq?tqx=out:json&gid=${ROSTER_GID}`;
+      try {
+        const raw = await fetch(url).then(r => r.text());
+        const json = parseGViz(raw);
+        const rows = toRows(json);
+        renderRoster(rows);
+      } catch (e) {
+        console.error(e);
+        document.getElementById('error').style.display = "block";
+      }
+    }
+
+    // Events
+    document.getElementById('search').addEventListener('input', loadRoster);
+    document.getElementById('position').addEventListener('change', loadRoster);
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Kickoff
+    loadRoster();
+  </script>
 </body>
 </html>
-
-
